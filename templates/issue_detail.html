@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Issue - {{ issue.title }}{% endblock %}
+
+{% block content %}
+    <div class="container text-center m-3">
+        <form method="post" class="form-control">
+            <h3>{{ issue.title }} by {{ issue.author }}</h3>
+            {{ detail_issue_form.type }}
+            {{ detail_issue_form.status }}
+            {% csrf_token %}
+            <button class="btn btn-success" type="submit">Save changes</button>
+        </form>
+        <form action="{% url 'board:issue_delete' issue.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-danger" type="submit">Delete Issue</button>
+        </form>
+    </div>
+{% endblock %}

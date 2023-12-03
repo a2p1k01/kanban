@@ -4,10 +4,13 @@
 
 {% block content %}
     <div class="container text-center m-3">
-        <form method="post">
-            {{ issue_form.as_p }}
+        <form method="post" class="form-control">
+            {{ issue_form.title }}
+            {{ issue_form.author }}
+            {{ issue_form.type }}
+            {{ issue_form.status }}
             {% csrf_token %}
-            <button type="submit">Create new Issue</button>
+            <button class="btn btn-success" type="submit">Create new Issue</button>
         </form>
     </div>
 {% endblock %}
