@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Kanban - Issues List{% endblock %}
+
+{% block content %}
+    <div class="container m-3">
+        <div class="row gx-5">
+            {% for issue in issues %}
+                {% if issue.status == "BUG" %}
+                    <div class="card border-3 border-danger m-3" style="max-width: 18rem;">
+                        <h4 class="card-header">{{ issue.title }}</h4>
+                        <div class="card-body text-danger">
+                            <div class="card-title">{{ issue.author }}</div>
+                            <div class="container" role="group">
+                                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                    {% csrf_token %}
+                                    <a href="{% url 'board:issue_update' issue.id 2 %}">
+                                        <button type="button" class="btn btn-primary">Work</button>
+                                    </a>
+                                    <a href="{% url 'board:issue_update' issue.id 3 %}">
+                                        <button type="button" class="btn btn-success">Done</button>
+                                    </a>
+                                    <a href="{% url 'board:issue_update' issue.id 4 %}">
+                                        <button type="button" class="btn btn-warning">X</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if issue.status == "WORK" %}
+                    <div class="card border-3 border-primary m-3" style="max-width: 18rem;">
+                        <h4 class="card-header">{{ issue.title }}</h4>
+                        <div class="card-body text-primary">
+                            <div class="card-title">{{ issue.author }}</div>
+                            <div class="container" role="group">
+                                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                    {% csrf_token %}
+                                    <a href="{% url 'board:issue_update' issue.id 3 %}">
+                                        <button type="button" class="btn btn-success">Done</button>
+                                    </a>
+                                    <a href="{% url 'board:issue_update' issue.id 1 %}">
+                                         <button type="button" class="btn btn-danger">Bug</button>
+                                    </a>
+                                    <a href="{% url 'board:issue_update' issue.id 4 %}">
+                                        <button type="button" class="btn btn-warning">X</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if issue.status == "DONE" %}
+                    <div class="card border-3 border-success m-3" style="max-width: 18rem;">
+                        <h4 class="card-header">{{ issue.title }}</h4>
+                        <div class="card-body text-success">
+                            <div class="card-title">{{ issue.author }}</div>
+                            <div class="container" role="group">
+                                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                    {% csrf_token %}
+                                    <a href="{% url 'board:issue_update' issue.id 2 %}">
+                                        <button type="button" class="btn btn-primary">Work</button>
+                                    </a>
+                                    <a href="{% url 'board:issue_update' issue.id 1 %}">
+                                         <button type="button" class="btn btn-danger">Bug</button>
+                                    </a>
+                                    <a href="{% url 'board:issue_update' issue.id 4 %}">
+                                        <button type="button" class="btn btn-warning">X</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
