@@ -1,5 +1,33 @@
 from django import forms
-from .models import Issue
+from django.contrib.auth.forms import UserCreationForm
+from .models import Issue, User
+
+
+class RegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control input-sm'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control input-sm'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control input-sm'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control input-sm'})
+
+
+class LoginForm(forms.ModelForm):
+    username = forms.CharField(max_length=65)
+    password = forms.CharField(max_length=65, widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'class': 'form-control input-sm'})
+        self.fields['password'].widget.attrs.update({'class': 'form-control input-sm'})
 
 
 class IssueForm(forms.ModelForm):

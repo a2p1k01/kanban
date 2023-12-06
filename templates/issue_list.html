@@ -3,36 +3,47 @@
 {% block title %}Kanban - Issues List{% endblock %}
 
 {% block content %}
-    <div class="container m-3">
-        <div class="row gx-5">
-            {% for issue in issues %}
-                <div class="container col gx-5">
-                    {% if issue.status != 'Complete' %}
-                        {% if issue.type == 'New Feature' %}
-                            <div class="card border-4 border-warning mb-5" style="max-width: 18rem;">
-                        {% elif issue.type == 'Task' %}
-                            <div class="card border-4 border-primary mb-5" style="max-width: 18rem;">
-                        {% elif issue.type == 'Critical' %}
-                            <div class="card border-4 border-danger mb-5" style="max-width: 18rem;">
+    <div class="container">
+        {% if user.is_superuser %}
+            <h4>Hello, <a href="/admin">Administration</a>!</h4>
+        {% elif user.is_authenticated %}
+            <h4>Hello, <a href="/profile">{{ user.username }}</a>!</h4>
+        {% else %}
+            <h4>Hello, <a href="/login">Guest</a>!</h4>
+        {% endif %}
+    </div>
+    {% if user.is_authenticated %}
+        <div class="container m-3">
+            <div class="row gx-5">
+                {% for issue in issues %}
+                    <div class="container col gx-5">
+                        {% if issue.status != 'Complete' %}
+                            {% if issue.type == 'New Feature' %}
+                                <div class="card border-4 border-warning mb-5" style="max-width: 18rem;">
+                            {% elif issue.type == 'Task' %}
+                                <div class="card border-4 border-primary mb-5" style="max-width: 18rem;">
+                            {% elif issue.type == 'Critical' %}
+                                <div class="card border-4 border-danger mb-5" style="max-width: 18rem;">
+                            {% else %}
+                                <div class="card border-4 border-dark mb-5" style="max-width: 18rem;">
+                            {% endif %}
                         {% else %}
-                            <div class="card border-4 border-dark mb-5" style="max-width: 18rem;">
+                            <div class="card border-4 border-success mb-5" style="max-width: 18rem;">
                         {% endif %}
-                    {% else %}
-                        <div class="card border-4 border-success mb-5" style="max-width: 18rem;">
-                    {% endif %}
-                        <h4 class="card-header">
-                            <a href="{{ issue.get_absolute_url }}">
-                                {{ issue.title }}
-                            </a>
-                        </h4>
-                        <div class="card-body text-dark">
-                            <h5 class="card-title">{{ issue.type }}</h5>
-                            <h5 class="card-title">{{ issue.status }}</h5>
-                            <p class="card-text">{{ issue.author }}</p>
+                            <h4 class="card-header">
+                                <a href="{{ issue.get_absolute_url }}">
+                                    {{ issue.title }}
+                                </a>
+                            </h4>
+                            <div class="card-body text-dark">
+                                <h5 class="card-title">{{ issue.type }}</h5>
+                                <h5 class="card-title">{{ issue.status }}</h5>
+                                <p class="card-text">{{ issue.author }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

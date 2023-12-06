@@ -12,5 +12,7 @@ urlpatterns = [
          '<slug:slug>/', views.issue_detail, name='issue_detail'),
     path('issue_delete/<int:issue_id>', views.issue_delete, name='issue_delete'),
     path('add_issue', views.add_issue, name='add_issue'),
+    path('register', views.register, name='register'),
+    path('login', views.login_user, name='login'),
 ]
 
