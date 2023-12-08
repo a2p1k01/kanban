@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Issue
 from .forms import IssueForm, DetailIssueForm, RegistrationForm, LoginForm
@@ -25,8 +26,8 @@ def login_user(request):
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
         if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user:
                 login(request, user)
@@ -36,9 +37,15 @@ def login_user(request):
 
 
 def issue_list(request):
-    issue_lst = Issue.closed.all()
     user = request.user
+    issue_lst = Issue.closed.filter(author=user)
     return render(request, 'issue_list.html', {'issues': issue_lst, 'user': user})
+
+
+@login_required
+def profile(request):
+    user = request.user
+    return render(request, 'profile.html', {'user': user})
 
 
 @login_required
@@ -47,6 +54,7 @@ def add_issue(request):
     issue_form = IssueForm(data=request.POST)
     if issue_form.is_valid() and request.method == 'POST':
         issue = issue_form.save(commit=False)
+        issue.author = request.user
         issue.save()
     return render(request, 'new_issue.html', {'issue_form': issue_form, 'issue': issue})
 

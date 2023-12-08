@@ -28,7 +28,7 @@ class Issue(models.Model):
     closed = ClosedManager()
     completed = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
-    #tags = TaggableManager()
+    # tags = TaggableManager()
 
     class Meta:
         ordering = ['created']

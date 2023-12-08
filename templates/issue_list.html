@@ -4,9 +4,7 @@
 
 {% block content %}
     <div class="container">
-        {% if user.is_superuser %}
-            <h4>Hello, <a href="/admin">Administration</a>!</h4>
-        {% elif user.is_authenticated %}
+        {% if user.is_authenticated %}
             <h4>Hello, <a href="/profile">{{ user.username }}</a>!</h4>
         {% else %}
             <h4>Hello, <a href="/login">Guest</a>!</h4>
